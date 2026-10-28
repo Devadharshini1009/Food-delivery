@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crave | Food Delivery</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --orange: #ff5a24;
+  --dark: #202124;
+  --cream: #fff6f0;
+  --gray: #747474;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--dark);
+  background: #fff;
+}
+
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+img { width: 100%; object-fit: cover; display: block; }
+a { text-decoration: none; color: inherit; }
+.hidden { display: none !important; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  padding: 16px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  box-shadow: 0 2px 12px #0000000b;
+}
+
+.logo { font-size: 28px; font-weight: 800; }
+.logo span { color: var(--orange); }
+
+nav { display: flex; gap: 22px; }
+nav button {
+  border: 0;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+nav button:hover { color: var(--orange); }
+
+.btn {
+  border: 0;
+  background: var(--orange);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 9px;
+  font-weight: 700;
+}
+.btn:hover { background: #e84714; }
+
+.cart-btn { white-space: nowrap; }
+
+.hero {
+  background: var(--cream);
+  padding: 55px 7%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 35px;
+}
+
+.tag {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 1.15;
+  margin: 15px 0;
+}
+
+.hero p { color: var(--gray); margin-bottom: 22px; }
+
+.hero img {
+  height: 360px;
+  border-radius: 25px;
+}
+
+section.content { padding: 45px 7%; }
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+h2 { font-size: 27px; }
+
+.search {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline-color: var(--orange);
+  margin: 15px 0 25px;
+}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.category {
+  border: 1px solid #eee;
+  border-radius: 13px;
+  background: white;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.category img {
+  height: 85px;
+  border-radius: 9px;
+  margin-bottom: 8px;
+}
+
+.category.active, .category:hover {
+  border-color: var(--orange);
+  background: var(--cream);
+}
+
+.restaurants {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.card {
+  border: 1px solid #eee;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: .2s;
+}
+
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px #00000012; }
+.card > img { height: 205px; }
+
+.card-body { padding: 16px; }
+.card-body h3 { font-size: 19px; }
+.muted { color: var(--gray); font-size: 13px; }
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  margin: 13px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.menu-btn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ffcfbd;
+  background: var(--cream);
+  color: var(--orange);
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.menu-btn:hover { background: var(--orange); color: white; }
+
+.page-title {
+  background: var(--cream);
+  padding: 35px 7%;
+}
+
+.page-title h1 { font-size: 36px; margin: 8px 0; }
+
+.back {
+  border: 0;
+  background: none;
+  color: var(--orange);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.restaurant-banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  align-items: center;
+}
+
+.restaurant-banner img { height: 250px; border-radius: 15px; }
+.restaurant-banner h1 { font-size: 35px; margin: 10px 0; }
+
+.food-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.food {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px;
+  border: 1px solid #eee;
+  border-radius: 13px;
+}
+
+.food img { width: 105px; height: 105px; border-radius: 10px; }
+.food-info { flex: 1; min-width: 0; }
+.food h3 { font-size: 15px; }
+.food p { font-size: 12px; color: var(--gray); margin: 5px 0; }
+.price { font-weight: 700; margin: 5px 0; }
+.add {
+  padding: 6px 13px;
+  border: 1px solid #ffcfbd;
+  background: white;
+  color: var(--orange);
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 15px 0;
+}
+
+.cart-item img { width: 85px; height: 80px; border-radius: 9px; }
+.cart-info { flex: 1; }
+.cart-info h3 { font-size: 15px; }
+.qty { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.qty button {
+  border: 1px solid #ddd;
+  background: white;
+  padding: 1px 9px;
+  border-radius: 5px;
+}
+
+.summary, .form-box {
+  background: #fff8f3;
+  padding: 22px;
+  border-radius: 14px;
+  align-self: start;
+}
+
+.summary h2, .form-box h2 { font-size: 22px; margin-bottom: 15px; }
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.total { border-top: 1px solid #ddd; padding-top: 15px; font-size: 17px; font-weight: 800; }
+.full { width: 100%; margin-top: 15px; }
+
+.empty { text-align: center; padding: 50px 15px; }
+.empty p { color: var(--gray); margin: 12px 0 20px; }
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 22px;
+  margin-top: 20px;
+}
+
+.form-box { background: white; border: 1px solid #eee; }
+.form-box label { display: block; font-size: 13px; font-weight: 600; margin: 13px 0 5px; }
+
+.form-box input, .form-box textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline-color: var(--orange);
+}
+
+.form-box textarea { min-height: 80px; resize: vertical; }
+
+.payment {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+
+.payment input { width: auto; }
+
+.success {
+  max-width: 650px;
+  margin: 50px auto;
+  text-align: center;
+  padding: 25px;
+}
+
+.success h1 { margin: 15px 0; font-size: 36px; }
+.success p { color: var(--gray); margin: 12px 0 20px; }
+
+.order-card { border: 1px solid #eee; padding: 20px; border-radius: 12px; margin: 15px 0; }
+.order-card p { font-size: 13px; color: var(--gray); margin-top: 7px; }
+
+footer {
+  background: #202124;
+  color: white;
+  text-align: center;
+  padding: 35px 15px;
+}
+footer p { color: #ccc; margin-top: 7px; font-size: 13px; }
+
+#toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #222;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 9px;
+  display: none;
+  z-index: 30;
+}
+
+@media(max-width: 850px) {
+  header { flex-wrap: wrap; padding: 14px 4%; }
+  nav { order: 3; width: 100%; justify-content: center; }
+  .hero { grid-template-columns: 1fr; }
+  .hero img { height: 280px; }
+  .categories { grid-template-columns: repeat(3, 1fr); }
+  .restaurants { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .food-list, .layout, .checkout-grid, .restaurant-banner { grid-template-columns: 1fr; }
+}
+
+@media(max-width: 520px) {
+  .restaurants { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 43px; }
+  section.content { padding: 30px 5%; }
+  .page-title { padding: 28px 5%; }
+  nav { gap: 14px; }
+  nav button { font-size: 12px; }
+  .food { padding: 9px; gap: 9px; }
+  .food img { width: 82px; height: 90px; }
+  .food h3 { font-size: 13px; }
+  .food p { font-size: 11px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="logo" href="#home" onclick="go('home')">crave<span>.</span></a>
+
+  <nav>
+    <button onclick="go('home')">Home</button>
+    <button onclick="go('restaurants')">Restaurants</button>
+    <button onclick="go('orders')">My Orders</button>
+  </nav>
+
+  <button class="btn cart-btn" onclick="go('cart')">
+    Cart (<span id="count">0</span>)
+  </button>
+</header>
+
+<main>
+
+<!-- HOME PAGE -->
+<div id="home-page">
+  <section class="hero">
+    <div>
+      <span class="tag">GOOD FOOD, GREAT MOOD</span>
+      <h1>Delicious food.<br>Delivered fresh.</h1>
+      <p>Explore your favourite restaurants and get your cravings delivered.</p>
+      <button class="btn" onclick="go('restaurants')">Explore Restaurants →</button>
+    </div>
+    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=85" alt="Delicious pizza">
+  </section>
+
+  <section class="content">
+    <div class="heading"><h2>Explore Categories</h2></div>
+    <div id="categories" class="categories"></div>
+    <div class="heading"><h2>Popular Restaurants</h2></div>
+    <div id="home-restaurants" class="restaurants"></div>
+  </section>
+</div>
+
+<!-- ALL RESTAURANTS PAGE -->
+<div id="restaurants-page" class="hidden">
+  <div class="page-title">
+    <span class="tag">DISCOVER SOMETHING DELICIOUS</span>
+    <h1>Find your favourite food</h1>
+    <p class="muted">Choose your restaurant and explore its menu.</p>
+    <input id="search" class="search" placeholder="Search restaurant or food..." oninput="renderRestaurants()">
+  </div>
+  <section class="content">
+    <div class="heading"><h2>All Restaurants</h2><span id="found" class="muted"></span></div>
+    <div id="all-restaurants" class="restaurants"></div>
+  </section>
+</div>
+
+<!-- RESTAURANT MENU PAGE -->
+<div id="menu-page" class="hidden">
+  <section class="content">
+    <button class="back" onclick="go('restaurants')">← Back to Restaurants</button>
+    <div id="restaurant-info" class="restaurant-banner"></div>
+    <div class="heading" style="margin-top:35px"><h2>Our Menu</h2></div>
+    <div id="food-list" class="food-list"></div>
+  </section>
+</div>
+
+<!-- CART PAGE -->
+<div id="cart-page" class="hidden">
+  <section class="content">
+    <span class="tag">YOUR SELECTION</span>
+    <h2>Your Shopping Cart</h2>
+    <div id="cart-content"></div>
+  </section>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div id="checkout-page" class="hidden">
+  <section class="content">
+    <span class="tag">ALMOST THERE</span>
+    <h2>Checkout</h2>
+    <div id="checkout-content"></div>
+  </section>
+</div>
+
+<!-- ORDER SUCCESS PAGE -->
+<div id="success-page" class="hidden">
+  <div id="success-content" class="success"></div>
+</div>
+
+<!-- ORDER HISTORY PAGE -->
+<div id="orders-page" class="hidden">
+  <section class="content">
+    <span class="tag">YOUR FOOD JOURNEY</span>
+    <h2>My Orders</h2>
+    <div id="orders-content"></div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <a class="logo" href="#home" onclick="go('home')">crave<span>.</span></a>
+  <p>Fresh food. Happy moments. Every day.</p>
+  <p>© 2026 Crave Food Delivery — Demo Website</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+// RESTAURANT AND FOOD DATA
+
+const restaurants = [
+{
+ id:1, name:"Spice Garden", cuisine:"South Indian", rating:4.8, time:"20-30 min",
+ image:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=700&q=80",
+ menu:[
+  {id:"f1",name:"Masala Dosa",price:90,category:"South Indian",image:"https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=400&q=80",desc:"Crispy dosa with potato masala."},
+  {id:"f2",name:"Idli Sambar",price:60,category:"South Indian",image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=400&q=80",desc:"Soft idlis with hot sambar."},
+  {id:"f3",name:"Veg Meals",price:150,category:"South Indian",image:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=400&q=80",desc:"Traditional South Indian meals."}
+ ]
+},
+{
+ id:2,name:"Burger House",cuisine:"Fast Food",rating:4.6,time:"25-35 min",
+ image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80",
+ menu:[
+  {id:"f4",name:"Classic Burger",price:129,category:"Fast Food",image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80",desc:"Burger with fresh vegetables."},
+  {id:"f5",name:"French Fries",price:89,category:"Fast Food",image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=400&q=80",desc:"Golden crispy potato fries."},
+  {id:"f6",name:"Cheese Burger",price:159,category:"Fast Food",image:"https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80",desc:"Cheesy burger with fresh toppings."}
+ ]
+},
+{
+ id:3,name:"Pizza Corner",cuisine:"Pizza",rating:4.7,time:"30-40 min",
+ image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=700&q=80",
+ menu:[
+  {id:"f7",name:"Margherita Pizza",price:199,category:"Pizza",image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80",desc:"Classic cheese and tomato pizza."},
+  {id:"f8",name:"Veg Supreme",price:279,category:"Pizza",image:"https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=400&q=80",desc:"Pizza loaded with veggie toppings."},
+  {id:"f9",name:"Garlic Bread",price:99,category:"Snacks",image:"https://images.unsplash.com/photo-1619531040576-f9416740661e?auto=format&fit=crop&w=400&q=80",desc:"Toasted garlic bread with herbs."}
+ ]
+},
+{
+ id:4,name:"Royal Biryani",cuisine:"Biryani",rating:4.9,time:"25-35 min",
+ image:"https://images.unsplash.com/photo-1563379091339-03246963d51a?auto=format&fit=crop&w=700&q=80",
+ menu:[
+  {id:"f10",name:"Chicken Biryani",price:220,category:"Biryani",image:"https://images.unsplash.com/photo-1563379091339-03246963d51a?auto=format&fit=crop&w=400&q=80",desc:"Fragrant rice with aromatic spices."},
+  {id:"f11",name:"Veg Biryani",price:160,category:"Biryani",image:"https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=400&q=80",desc:"Flavourful vegetable dum biryani."},
+  {id:"f12",name:"Paneer Curry",price:180,category:"Indian",image:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=400&q=80",desc:"Paneer in rich Indian gravy."}
+ ]
+},
+{
+ id:5,name:"Sweet Treats",cuisine:"Desserts",rating:4.5,time:"20-30 min",
+ image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80",
+ menu:[
+  {id:"f13",name:"Chocolate Cake",price:120,category:"Desserts",image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80",desc:"Rich chocolate layered cake."},
+  {id:"f14",name:"Ice Cream",price:80,category:"Desserts",image:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80",desc:"Creamy delicious ice cream."},
+  {id:"f15",name:"Donuts",price:90,category:"Desserts",image:"https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=400&q=80",desc:"Sweet and soft donuts."}
+ ]
+},
+{
+ id:6,name:"Green Bowl",cuisine:"Healthy Food",rating:4.6,time:"20-30 min",
+ image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80",
+ menu:[
+  {id:"f16",name:"Fresh Salad",price:130,category:"Healthy",image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=80",desc:"Fresh greens and vegetables."},
+  {id:"f17",name:"Fruit Bowl",price:110,category:"Healthy",image:"https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=400&q=80",desc:"Fresh seasonal fruits."},
+  {id:"f18",name:"Veg Rice Bowl",price:160,category:"Healthy",image:"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=400&q=80",desc:"Rice bowl with fresh veggies."}
+ ]
+}
+];
+
+const categoryData = [
+ ["All","https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=250&q=80"],
+ ["South Indian","https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=250&q=80"],
+ ["Fast Food","https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=250&q=80"],
+ ["Pizza","https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=250&q=80"],
+ ["Biryani","https://images.unsplash.com/photo-1563379091339-03246963d51a?auto=format&fit=crop&w=250&q=80"],
+ ["Desserts","https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=250&q=80"]
+];
+
+let cart = JSON.parse(localStorage.getItem("crave-cart") || "[]");
+let orders = JSON.parse(localStorage.getItem("crave-orders") || "[]");
+let currentRestaurant = null;
+let selectedCategory = "All";
+let toastTimer;
+
+function money(n) { return "₹" + Number(n).toFixed(2); }
+function safe(s) {
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function saveCart() {
+ localStorage.setItem("crave-cart",JSON.stringify(cart));
+ document.getElementById("count").textContent=cart.reduce((s,i)=>s+i.qty,0);
+}
+function toast(msg) {
+ const t=document.getElementById("toast");
+ t.textContent=msg;t.style.display="block";
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>t.style.display="none",2200);
+}
+
+const pages=["home","restaurants","menu","cart","checkout","success","orders"];
+
+function go(page) {
+ if(!pages.includes(page)) page="home";
+ if(page==="menu"&&!currentRestaurant) page="restaurants";
+ if(page==="checkout"&&!cart.length) page="cart";
+
+ if(page==="restaurants") renderRestaurants();
+ if(page==="menu"&&currentRestaurant) renderMenu();
+ if(page==="cart") renderCart();
+ if(page==="checkout") renderCheckout();
+ if(page==="orders") renderOrders();
+
+ pages.forEach(p=>document.getElementById(p+"-page").classList.add("hidden"));
+ document.getElementById(page+"-page").classList.remove("hidden");
+ history.replaceState(null,"","#"+page);
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function restaurantCard(r) {
+ return `<article class="card">
+ <img src="${r.image}" alt="${safe(r.name)}" loading="lazy">
+ <div class="card-body">
+ <h3>${safe(r.name)}</h3>
+ <p class="muted">${safe(r.cuisine)}</p>
+ <div class="meta"><span>★ ${r.rating}</span><span>${safe(r.time)}</span><span>₹${r.menu[0].price}+</span></div>
+ <button class="menu-btn" onclick="openRestaurant(${r.id})">View Menu →</button>
+ </div></article>`;
+}
+
+function renderCategories() {
+ document.getElementById("categories").innerHTML=categoryData.map(([name,image])=>
+ `<button class="category ${selectedCategory===name?"active":""}" onclick="chooseCategory('${name}')">
+ <img src="${image}" alt="${name}" loading="lazy"><span>${name==="All"?"All Food":name}</span></button>`
+ ).join("");
+}
+
+function chooseCategory(name) {
+ selectedCategory=name;
+ renderCategories();
+ go("restaurants");
+}
+
+function renderHome() {
+ renderCategories();
+ document.getElementById("home-restaurants").innerHTML=restaurants.slice(0,3).map(restaurantCard).join("");
+}
+
+function renderRestaurants() {
+ const q=document.getElementById("search").value.toLowerCase().trim();
+ const result=restaurants.filter(r=>{
+  const cat=selectedCategory==="All" ||
+    r.cuisine.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+    r.menu.some(f=>f.category.toLowerCase().includes(selectedCategory.toLowerCase()));
+  const match=r.name.toLowerCase().includes(q) ||
+    r.cuisine.toLowerCase().includes(q) ||
+    r.menu.some(f=>f.name.toLowerCase().includes(q));
+  return cat&&match;
+ });
+ document.getElementById("found").textContent=result.length+" found";
+ document.getElementById("all-restaurants").innerHTML=result.length
+ ?result.map(restaurantCard).join()
+ :`<div class="empty"><h2>No results found</h2><p>Try another search.</p><button class="btn" onclick="resetFilters()">Show all</button></div>`;
+}
+
+function resetFilters() {
+ selectedCategory="All";
+ document.getElementById("search").value="";
+ renderCategories();renderRestaurants();
+}
+
+function openRestaurant(id) {
+ currentRestaurant=restaurants.find(r=>r.id===id);
+ if(!currentRestaurant)return;
+ go("menu");
+}
+
+function renderMenu() {
+ const r=currentRestaurant;
+ document.getElementById("restaurant-info").innerHTML=`
+ <img src="${r.image}" alt="${safe(r.name)}">
+ <div><span class="tag">RESTAURANT MENU</span><h1>${safe(r.name)}</h1>
+ <p>${safe(r.cuisine)}</p><p style="margin-top:10px">★ ${r.rating} · ${safe(r.time)}</p>
+ <p class="muted" style="margin-top:10px">Freshly prepared food, made for you.</p>
+ </div>`;
+
+ document.getElementById("food-list").innerHTML=r.menu.map(f=>{
+ const item=cart.find(x=>x.id===f.id);
+ return `<article class="food"><img src="${f.image}" alt="${safe(f.name)}" loading="lazy">
+ <div class="food-info"><h3>${safe(f.name)}</h3><p>${safe(f.desc)}</p>
+ <div class="price">${money(f.price)}</div>
+ <button class="add" onclick="addFood(${r.id},'${f.id}')">${item?"Add more +":"ADD +"}</button>
+ </div></article>`;
+ }).join("");
+}
+
+function addFood(rid,fid) {
+ const r=restaurants.find(x=>x.id===rid);
+ const f=r?.menu.find(x=>x.id===fid);
+ if(!r||!f)return;
+
+ if(cart.length&&cart[0].restaurantId!==rid) {
+  if(!confirm("Cart has items from another restaurant. Clear cart and order from "+r.name+"?"))return;
+  cart=[];
+ }
+
+ const existing=cart.find(x=>x.id===fid);
+ if(existing)existing.qty++;
+ else cart.push({...f,qty:1,restaurantId:rid,restaurantName:r.name});
+
+ saveCart();renderMenu();toast(f.name+" added to cart!");
+}
+
+function subtotal() {return cart.reduce((s,x)=>s+x.price*x.qty,0);}
+function delivery() {return cart.length&&subtotal()<499?30:0;}
+function total() {return subtotal()+delivery();}
+
+function summary() {
+ return `<div class="summary"><h2>Bill Details</h2>
+ <div class="line"><span>Item total</span><b>${money(subtotal())}</b></div>
+ <div class="line"><span>Delivery fee</span><b>${delivery()?money(delivery()):"FREE"}</b></div>
+ <div class="line"><span>Taxes</span><b>Included</b></div>
+ <div class="line total"><span>Total</span><span>${money(total())}</span></div>
+ <button class="btn full" onclick="go('checkout')">Proceed to Checkout →</button>
+ <p class="muted" style="text-align:center;margin-top:12px">${subtotal()>=499?"Free delivery unlocked!":"Free delivery above ₹499."}</p>
+ </div>`;
+}
+
+function changeQty(id,n) {
+ const item=cart.find(x=>x.id===id);
+ if(!item)return;
+ item.qty+=n;
+ if(item.qty<=0)cart=cart.filter(x=>x.id!==id);
+ saveCart();renderCart();
+}
+
+function renderCart() {
+ const el=document.getElementById("cart-content");
+ if(!cart.length) {
+  el.innerHTML=`<div class="empty"><h2>Your cart is empty!</h2><p>Add your favourite food to get started.</p><button class="btn" onclick="go('restaurants')">Explore Restaurants</button></div>`;
+  return;
+ }
+
+ el.innerHTML=`<div class="layout"><div>
+ <p class="muted">Restaurant: ${safe(cart[0].restaurantName)}</p>
+ ${cart.map(x=>`<div class="cart-item">
+ <img src="${x.image}" alt="${safe(x.name)}">
+ <div class="cart-info"><h3>${safe(x.name)}</h3><p class="muted">${money(x.price)}</p>
+ <div class="qty"><button onclick="changeQty('${x.id}',-1)">−</button><b>${x.qty}</b><button onclick="changeQty('${x.id}',1)">+</button></div></div>
+ <b>${money(x.price*x.qty)}</b></div>`).join("")}
+ <button class="menu-btn" style="margin-top:20px" onclick="go('restaurants')">+ Add More Food</button>
+ </div>${summary()}</div>`;
+}
+
+function renderCheckout() {
+ if(!cart.length){go("cart");return;}
+ document.getElementById("checkout-content").innerHTML=`
+ <div class="checkout-grid">
+ <form class="form-box" id="order-form">
+ <h2>Delivery Details</h2>
+ <label for="name">Full Name *</label>
+ <input id="name" name="name" required maxlength="80" autocomplete="name" placeholder="Your name">
+ <label for="phone">Mobile Number *</label>
+ <input id="phone" name="phone" required type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit phone number">
+ <label for="address">Delivery Address *</label>
+ <textarea id="address" name="address" required maxlength="300" autocomplete="street-address" placeholder="House number, street, area"></textarea>
+ <h2 style="margin-top:22px">Payment Method</h2>
+ <label class="payment"><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label>
+ <label class="payment"><input type="radio" name="payment" value="Demo Online Payment"> Demo Online Payment</label>
+ <button class="btn full" type="submit">Place Order · ${money(total())}</button>
+ <p class="muted" style="margin-top:12px">Demo only. No real payment is processed.</p>
+ </form>
+ <div>${summary()}<div class="form-box" style="margin-top:15px"><h2>Your Items</h2>
+ ${cart.map(x=>`<div class="line"><span>${safe(x.name)} × ${x.qty}</span><b>${money(x.price*x.qty)}</b></div>`).join("")}
+ </div></div></div>`;
+
+ document.getElementById("order-form").addEventListener("submit",placeOrder);
+}
+
+function placeOrder(e) {
+ e.preventDefault();
+ if(!cart.length)return go("cart");
+ const form=e.currentTarget;
+ if(!form.reportValidity())return;
+ const d=new FormData(form);
+
+ const order={
+  id:"CR"+Date.now().toString().slice(-8),
+  name:d.get("name").trim(),
+  phone:d.get("phone").trim(),
+  address:d.get("address").trim(),
+  payment:d.get("payment"),
+  restaurant:cart[0].restaurantName,
+  items:cart.map(x=>({...x})),
+  total:total(),
+  date:new Date().toLocaleString()
+ };
+
+ orders.unshift(order);
+ localStorage.setItem("crave-orders",JSON.stringify(orders));
+ cart=[];saveCart();
+
+ document.getElementById("success-content").innerHTML=`
+ <div style="font-size:55px;color:green">✓</div>
+ <span class="tag">ORDER CONFIRMED</span>
+ <h1>Thank you, ${safe(order.name)}!</h1>
+ <p>Your demo order has been placed successfully.</p>
+ <div class="summary" style="text-align:left;margin:20px 0">
+ <div class="line"><span>Order ID</span><b>${order.id}</b></div>
+ <div class="line"><span>Restaurant</span><b>${safe(order.restaurant)}</b></div>
+ <div class="line"><span>Payment</span><b>${safe(order.payment)}</b></div>
+ <div class="line total"><span>Total</span><b>${money(order.total)}</b></div>
+ </div>
+ <button class="btn" onclick="go('orders')">View My Orders</button>
+ <button class="menu-btn" style="margin-top:10px" onclick="go('home')">Back to Home</button>`;
+ go("success");
+}
+
+function renderOrders() {
+ const el=document.getElementById("orders-content");
+ if(!orders.length) {
+  el.innerHTML=`<div class="empty"><h2>No orders yet</h2><p>Your orders will appear here.</p><button class="btn" onclick="go('restaurants')">Explore Food</button></div>`;
+  return;
+ }
+
+ el.innerHTML=orders.map(o=>`<article class="order-card">
+ <h3>Order #${safe(o.id)}</h3>
+ <p>${safe(o.date)} · ${safe(o.restaurant)}</p>
+ <p>Items: ${o.items.map(x=>safe(x.name)+" × "+x.qty).join(", ")}</p>
+ <p>Payment: ${safe(o.payment)} · Demo order</p>
+ <div class="line total"><span>Total</span><b>${money(o.total)}</b></div>
+ </article>`).join("");
+}
+
+renderHome();
+saveCart();
+
+const initial=location.hash.slice(1);
+go(pages.includes(initial)?initial:"home");
+
+window.addEventListener("hashchange",()=>{
+ const p=location.hash.slice(1)||"home";
+ if(p==="menu"&&!currentRestaurant){go("restaurants");return;}
+ if(pages.includes(p))go(p);
+});
+</script>
+</body>
+</html>
